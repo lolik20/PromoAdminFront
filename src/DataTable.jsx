@@ -43,12 +43,21 @@ export default function DataTable(){
         setModal(true)
       })
     }
+    async function Login(){
+      await axios.post(`${urls.main}/api/admin/login`,{login:localStorage.getItem("login"),password:localStorage.getItem("password")})
+      .then(response=>{
+        
+      }).catch(error=>{
+        window.location.href="/login"
+      })
+    }
   async  function Fetch(){
        await axios.get(`${urls.main}/api/admin/requests`).then(response=>{
             setRequests(response.data)
         })
     }
     useEffect(()=>{
+      Login()
         Fetch()
     },[])
     return(

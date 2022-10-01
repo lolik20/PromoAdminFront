@@ -1,0 +1,33 @@
+.login-container{
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+.login-window{
+    margin-top: 100px;
+    border: 1px solid rgb(176, 176, 176);
+    border-radius: 20px;
+    width: 250px;
+    height: 250px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    padding: 10px;
+    
+}
+.input{
+    border-radius: 20px;
+    padding: 5px;
+    text-align: center;
+}
+.button{
+    border-radius: 20px;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid rgb(176, 176, 176);
+    transition: .1s linear all;
+}
+.button:hover{
+    background-color:  rgb(217, 217, 217);
+}
