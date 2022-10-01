@@ -9,7 +9,7 @@ export default function Login(){
     async function Login(){
        await axios.post(`${urls.main}/api/admin/login`,{login:login,password:password})
         .then(response=>{
-            window.location.href="/main"
+            window.location.href="/"
         })
     }
     useEffect(()=>{
