@@ -36,6 +36,18 @@ export default function DataTable(){
     const [requests,setRequests]=useState([])
     const [isModal,setModal]= useState(false)
     const [image,setImage] =useState("")
+    const [count,setCount]=useState(0)
+    const [rowsPerPage,setRowsPerPage]=useState(10)
+    const [page,setPage]=useState(0)
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
+
     async function GetPhoto(id){
       await axios.get(`${urls.main}/api/admin/photo?id=${id}`)
       .then(response=>{
@@ -46,19 +58,20 @@ export default function DataTable(){
     async function Login(){
       await axios.post(`${urls.main}/api/admin/login`,{login:localStorage.getItem("login"),password:localStorage.getItem("password")})
       .then(response=>{
-        
+        Fetch()
+
       }).catch(error=>{
         window.location.href="/login"
       })
     }
   async  function Fetch(){
-       await axios.get(`${urls.main}/api/admin/requests`).then(response=>{
+       await axios.get(`${urls.main}/api/admin/requests?skip${page*rowsPerPage}&take=${rowsPerPage}`).then(response=>{
             setRequests(response.data)
+            setCount(response.data.length)
         })
     }
     useEffect(()=>{
       Login()
-        Fetch()
     },[])
     return(
         <React.Fragment>
@@ -121,15 +134,15 @@ export default function DataTable(){
   </Box>
 </Modal>
       </TableContainer>
-      {/* <TablePagination
-          style={{color:"#fff",backgroundColor:"#FDD536"}}  
+      <TablePagination
+            
           component="div"
-        count={countPassive}
-        page={pagePassive}
-        onPageChange={handleChangePagePassive}
-        rowsPerPage={rowsPerPagePassive}
-        onRowsPerPageChange={handleChangeRowsPerPagePassive}
-      /> */}
+        count={count}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
   </React.Fragment>
 
     );
