@@ -48,6 +48,18 @@ export default function DataTable(){
       setPage(0);
     };
 
+    async function Accept(id){
+      await axios.put(`${urls.main}/api/admin/accept?id=${id}`)
+      .then(response=>{
+        
+      })
+    }
+    async function Decline(id){
+      await axios.put(`${urls.main}/api/admin/decline?id=${id}`)
+      .then(response=>{
+        Fetch()
+      })
+    }
     async function GetPhoto(id){
       await axios.get(`${urls.main}/api/admin/photo?id=${id}`)
       .then(response=>{
@@ -70,6 +82,9 @@ export default function DataTable(){
             setCount(response.data.length)
         })
     }
+    useEffect(()=>{
+      Fetch()
+    },[rowsPerPage,page])
     useEffect(()=>{
       Login()
     },[])
@@ -101,13 +116,13 @@ export default function DataTable(){
                 <TableCell align="center">{row.prize==null?"ожидает подтверждения":row.prize}</TableCell>
 
                 <TableCell align="center">
-                  <button className='button'>
+                  <button className='button'  onClick={()=>Accept(row.photoId)}>
               <CheckOutlinedIcon width={18} height={18} color="success"></CheckOutlinedIcon>
               </button>
                 </TableCell>
                 
                 <TableCell align="center">
-                  <button className='button'>
+                  <button className='button' onClick={()=>Decline(row.photoId)}>
                   <CloseIcon width={18} height={18} color="error" ></CloseIcon>
 
                   </button>
