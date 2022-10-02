@@ -14,13 +14,16 @@ import './DataTable.css'
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 const axios = require('axios').default;
 
 const style = {
+  gap:2,
   position: 'absolute',
   top: '50%',
   left: '50%',
+  alignItems:"center",
   justifyContent:"center",
   display:"flex",
   flexDirection:"column",
@@ -35,6 +38,8 @@ const style = {
 export default function DataTable(){
     const [requests,setRequests]=useState([])
     const [isModal,setModal]= useState(false)
+    const [reason,setReason] =useState("")
+    const [isDeclineModal,setDeclineModal]=useState(false)
     const [image,setImage] =useState("")
     const [count,setCount]=useState(0)
     const [rowsPerPage,setRowsPerPage]=useState(10)
@@ -47,17 +52,21 @@ export default function DataTable(){
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
     };
-
+    async function OpenDeclineModal(id){
+      localStorage.setItem("id",id)
+      setDeclineModal(true)
+    }
     async function Accept(id){
       await axios.put(`${urls.main}/api/admin/accept?id=${id}`)
       .then(response=>{
-        
+        Fetch()
       })
     }
     async function Decline(id){
-      await axios.put(`${urls.main}/api/admin/decline?id=${id}`)
+      await axios.put(`${urls.main}/api/admin/decline?id=${id}&reason=${reason}`)
       .then(response=>{
         Fetch()
+        setDeclineModal(false)
       })
     }
     async function GetPhoto(id){
@@ -77,7 +86,7 @@ export default function DataTable(){
       })
     }
   async  function Fetch(){
-       await axios.get(`${urls.main}/api/admin/requests?skip${page*rowsPerPage}&take=${rowsPerPage}`).then(response=>{
+       await axios.get(`${urls.main}/api/admin/requests?skip=${page*rowsPerPage}&take=${rowsPerPage}`).then(response=>{
             setRequests(response.data)
             setCount(response.data.length)
         })
@@ -122,7 +131,7 @@ export default function DataTable(){
                 </TableCell>
                 
                 <TableCell align="center">
-                  <button className='button' onClick={()=>Decline(row.photoId)}>
+                  <button className='button' onClick={()=>OpenDeclineModal(row.photoId)}>
                   <CloseIcon width={18} height={18} color="error" ></CloseIcon>
 
                   </button>
@@ -140,13 +149,27 @@ export default function DataTable(){
   open={isModal}
   onClose={()=>setModal(false)}
   aria-labelledby="modal-modal-title"
-  aria-describedby="modal-modal-description"
->
+  aria-describedby="modal-modal-description">
+
   <Box sx={style}>
           <img src={`data:image/jpeg;base64,${image}`}></img>
           <Button variant="text" onClick={()=>setModal(false)}>Закрыть</Button>
 
   </Box>
+</Modal>
+<Modal
+  open={isDeclineModal}
+  onClose={()=>setDeclineModal(false)}
+  aria-labelledby="modal-modal-title"
+  aria-describedby="modal-modal-description"
+>
+<Box sx={style} style={{width:200}}>
+
+<TextField id="standard-basic" label="Причина отказа" variant="standard" value={reason} onChange={(e)=>setReason(e.target.value)} />
+<Button variant="outlined" style={{width:200}} onClick={()=>{Decline(localStorage.getItem("id"))}}>Отклонить</Button>
+
+</Box>
+
 </Modal>
       </TableContainer>
       <TablePagination
