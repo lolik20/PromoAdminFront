@@ -87,8 +87,8 @@ export default function DataTable(){
     }
   async  function Fetch(){
        await axios.get(`${urls.main}/api/admin/requests?skip=${page*rowsPerPage}&take=${rowsPerPage}`).then(response=>{
-            setRequests(response.data)
-            setCount(response.data.length)
+            setRequests(response.data.codes)
+            setCount(response.data.count)
         })
     }
     useEffect(()=>{
