@@ -152,7 +152,7 @@ export default function DataTable(){
   aria-describedby="modal-modal-description">
 
   <Box sx={style}>
-          <img src={`data:image/jpeg;base64,${image}`}></img>
+          <img className={styles.codeImage} src={`data:image/jpeg;base64,${image}`}></img>
           <Button variant="text" onClick={()=>setModal(false)}>Закрыть</Button>
 
   </Box>
