@@ -3,18 +3,22 @@ import DataTable from './DataTable';
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './Login';
+import TotalTable from './TotalTable';
+import Nav from './Nav';
 
 function App() {
   return (
-    <div className="container">
-
+<BrowserRouter>
           <Routes>
+    <Route path="/"  element={<Nav/>}>
+    <Route index element={<DataTable/>}></Route>
+    <Route path="/all" index element={<TotalTable/>}></Route>
 
-    <Route path="/" index element={<DataTable></DataTable>}></Route>
-    <Route path="/login" index element={<Login></Login>}></Route>
+    </Route>
+    <Route path="/login" index element={<Login/>}></Route>
 
     </Routes>
-    </div>
+    </BrowserRouter>
 
   );
 }

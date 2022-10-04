@@ -1,0 +1,18 @@
+.container{
+    width: 1344px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  nav{
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+  }
+  nav a{
+    text-decoration: none;
+    color: black;
+  }
+  nav a:hover{
+    color: rgb(119, 119, 119);
+  }
