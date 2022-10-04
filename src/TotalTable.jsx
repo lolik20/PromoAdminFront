@@ -56,7 +56,12 @@ export default function TotalTable(){
       localStorage.setItem("id",id)
       setDeclineModal(true)
     }
-   
+    async function DownloadImage(){
+      var a = document.createElement("a"); //Create <a>
+      a.href = "data:image/jpg;base64," + image; //Image Base64 Goes here
+      a.download = "image.jpg"; //File name Here
+      a.click()
+    }
     async function GetPhoto(id){
       await axios.get(`${urls.main}/api/admin/photo?id=${id}`)
       .then(response=>{
@@ -132,8 +137,10 @@ export default function TotalTable(){
   aria-describedby="modal-modal-description">
 
   <Box sx={style}>
-          <img src={`data:image/jpeg;base64,${image}`}></img>
-          <Button variant="text" onClick={()=>setModal(false)}>Закрыть</Button>
+          <img className='codeImage' src={`data:image/jpeg;base64,${image}`}></img>
+          <Button variant="outlined" style={{width:200}} onClick={()=>DownloadImage()}>Загрузить</Button>
+
+          <Button variant="outlined" onClick={()=>setModal(false)}>Закрыть</Button>
 
   </Box>
 </Modal>

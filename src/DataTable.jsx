@@ -62,6 +62,12 @@ export default function DataTable(){
         Fetch()
       })
     }
+    async function DownloadImage(){
+      var a = document.createElement("a"); //Create <a>
+      a.href = "data:image/jpg;base64," + image; //Image Base64 Goes here
+      a.download = "image.jpg"; //File name Here
+      a.click()
+    }
     async function Decline(id){
       await axios.put(`${urls.main}/api/admin/decline?id=${id}&reason=${reason}`)
       .then(response=>{
@@ -152,8 +158,10 @@ export default function DataTable(){
   aria-describedby="modal-modal-description">
 
   <Box sx={style}>
-          <img className={styles.codeImage} src={`data:image/jpeg;base64,${image}`}></img>
-          <Button variant="text" onClick={()=>setModal(false)}>Закрыть</Button>
+          <img className='codeImage' src={`data:image/jpeg;base64,${image}`}></img>
+          <Button variant="outlined" style={{width:200}} onClick={()=>DownloadImage()}>Загрузить</Button>
+
+          <Button variant="outlined" onClick={()=>setModal(false)}>Закрыть</Button>
 
   </Box>
 </Modal>
@@ -166,6 +174,7 @@ export default function DataTable(){
 <Box sx={style} style={{width:200}}>
 
 <TextField id="standard-basic" label="Причина отказа" variant="standard" value={reason} onChange={(e)=>setReason(e.target.value)} />
+
 <Button variant="outlined" style={{width:200}} onClick={()=>{Decline(localStorage.getItem("id"))}}>Отклонить</Button>
 
 </Box>
