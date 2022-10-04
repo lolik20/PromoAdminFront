@@ -113,6 +113,7 @@ export default function DataTable(){
               <TableCell align="center">Номер телефона</TableCell>
               <TableCell align="center">ID фотографии</TableCell>
               <TableCell align="center">Приз</TableCell>
+              <TableCell align="center">Дата</TableCell>
 
               <TableCell align="center"></TableCell>
               <TableCell align="center"></TableCell>
@@ -129,7 +130,10 @@ export default function DataTable(){
                 <TableCell align="center">{row.phoneNumber}</TableCell>
                 <TableCell align="center"><span onClick={()=>GetPhoto(row.photoId)} style={{cursor:"pointer"}}>{row.photoId}</span></TableCell>
                 <TableCell align="center">{row.prize==null?"ожидает подтверждения":row.prize}</TableCell>
+                <TableCell align="center">
+                {row.date}
 
+                </TableCell>
                 <TableCell align="center">
                   <button className='button'  onClick={()=>Accept(row.photoId)}>
               <CheckOutlinedIcon width={18} height={18} color="success"></CheckOutlinedIcon>
@@ -143,7 +147,7 @@ export default function DataTable(){
                   </button>
 
                 </TableCell>
-
+        
                 {/* <TableCell align="center">{row.prize}</TableCell> */}
 
   

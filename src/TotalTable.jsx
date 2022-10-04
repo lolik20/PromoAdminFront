@@ -102,6 +102,7 @@ export default function TotalTable(){
               <TableCell align="center">Приз</TableCell>
               <TableCell align="center">Статус</TableCell>
               <TableCell align="center">Причина отказа</TableCell>
+              <TableCell align="center">Дата создания</TableCell>
 
             </TableRow>
           </TableHead>
@@ -121,6 +122,10 @@ export default function TotalTable(){
                 </TableCell>
                 <TableCell align="center">
                 {row.reason == null?"-":row.reason}
+
+                </TableCell>
+                <TableCell align="center">
+                {row.date}
 
                 </TableCell>
 
