@@ -42,12 +42,15 @@ export default function DataTable(){
     const [isDeclineModal,setDeclineModal]=useState(false)
     const [image,setImage] =useState("")
     const [count,setCount]=useState(0)
+    const [query,setQuery]=useState("")
     const [rowsPerPage,setRowsPerPage]=useState(10)
     const [page,setPage]=useState(0)
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
-  
+    useEffect(()=>{
+      Fetch()
+    },[query])
     const handleChangeRowsPerPage = (event) => {
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
@@ -92,7 +95,7 @@ export default function DataTable(){
       })
     }
   async  function Fetch(){
-       await axios.get(`${urls.main}/api/admin/requests?skip=${page*rowsPerPage}&take=${rowsPerPage}`).then(response=>{
+       await axios.get(`${urls.main}/api/admin/requests?skip=${page*rowsPerPage}&take=${rowsPerPage}&query=${query}`).then(response=>{
             setRequests(response.data.codes)
             setCount(response.data.count)
         })
@@ -105,6 +108,8 @@ export default function DataTable(){
     },[])
     return(
         <React.Fragment>
+                  <TextField id="standard-basic" value={query} onChange={(e)=>setQuery(e.target.value)} label="Номер телефона или ID фотографии" variant="standard" />
+
         <TableContainer component={Paper}>
 
         <Table  aria-label="simple table">
