@@ -115,7 +115,7 @@ export default function TotalTable(){
            
                 <TableCell align="center">{row.phoneNumber}</TableCell>
                 <TableCell align="center"><span onClick={()=>GetPhoto(row.photoId)} style={{cursor:"pointer"}}>{row.photoId}</span></TableCell>
-                <TableCell align="center">{row.prize==null?"отклонено":row.prize}</TableCell>
+                <TableCell align="center">{row.prize==null?"-":row.prize}</TableCell>
 
                 <TableCell align="center">
                   {row.status}
