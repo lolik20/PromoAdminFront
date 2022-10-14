@@ -15,6 +15,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Switch from '@mui/material/Switch';
 
 const axios = require('axios').default;
 
@@ -38,6 +39,7 @@ const style = {
 export default function DataTable(){
     const [requests,setRequests]=useState([])
     const [isModal,setModal]= useState(false)
+    const[checked,setChecked]=useState(false)
     const [reason,setReason] =useState("")
     const [isDeclineModal,setDeclineModal]=useState(false)
     const [image,setImage] =useState("")
@@ -94,8 +96,11 @@ export default function DataTable(){
         window.location.href="/login"
       })
     }
+    useEffect(()=>{
+      Fetch()
+    },[checked])
   async  function Fetch(){
-       await axios.get(`${urls.main}/api/admin/requests?skip=${page*rowsPerPage}&take=${rowsPerPage}&query=${query}`).then(response=>{
+       await axios.get(`${urls.main}/api/admin/requests?skip=${page*rowsPerPage}&take=${rowsPerPage}&query=${query}&country=${checked?1:0}`).then(response=>{
             setRequests(response.data.codes)
             setCount(response.data.count)
         })
@@ -109,7 +114,16 @@ export default function DataTable(){
     return(
         <React.Fragment>
                   <TextField id="standard-basic" value={query} onChange={(e)=>setQuery(e.target.value)} label="Номер телефона или ID фотографии" variant="standard" />
-
+                 
+<div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+  <span>KG</span>
+<Switch
+  checked={checked}
+  onChange={()=>setChecked(!checked)}
+  inputProps={{ 'aria-label': 'controlled' }}
+/>
+<span>KZ</span>
+</div>
         <TableContainer component={Paper}>
 
         <Table  aria-label="simple table">
@@ -119,6 +133,8 @@ export default function DataTable(){
               <TableCell align="center">ID фотографии</TableCell>
               <TableCell align="center">Приз</TableCell>
               <TableCell align="center">Дата</TableCell>
+              <TableCell align="center">Страна</TableCell>
+              <TableCell align="center">Канал</TableCell>
 
               <TableCell align="center"></TableCell>
               <TableCell align="center"></TableCell>
@@ -137,6 +153,14 @@ export default function DataTable(){
                 <TableCell align="center">{row.prize==null?"ожидает подтверждения":row.prize}</TableCell>
                 <TableCell align="center">
                 {row.date}
+
+                </TableCell>
+                <TableCell align="center">
+                {row.country}
+
+                </TableCell>
+                <TableCell align="center">
+                {row.channel}
 
                 </TableCell>
                 <TableCell align="center">

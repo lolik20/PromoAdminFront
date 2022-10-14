@@ -15,6 +15,9 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Switch from '@mui/material/Switch';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const axios = require('axios').default;
 
@@ -38,10 +41,12 @@ const style = {
 export default function TotalTable(){
     const [requests,setRequests]=useState([])
     const [isModal,setModal]= useState(false)
+    const [checked,setChecked]=useState(false)
     const [reason,setReason] =useState("")
     const [isDeclineModal,setDeclineModal]=useState(false)
     const [image,setImage] =useState("")
     const [query,setQuery]=useState("")
+    const [isLoader,setLoader]=useState(true)
     const [count,setCount]=useState(0)
     const [rowsPerPage,setRowsPerPage]=useState(10)
     const [page,setPage]=useState(0)
@@ -81,11 +86,17 @@ export default function TotalTable(){
         window.location.href="/login"
       })
     }
+    useEffect(()=>{
+
+      Fetch()
+    },[checked])
   async  function Fetch(){
-       await axios.get(`${urls.main}/api/admin/all?skip=${page*rowsPerPage}&take=${rowsPerPage}&query=${query}`).then(response=>{
+    setLoader(true)
+       await axios.get(`${urls.main}/api/admin/all?skip=${page*rowsPerPage}&take=${rowsPerPage}&query=${query}&country=${checked?1:0}`).then(response=>{
             setRequests(response.data.codes)
             setCount(response.data.count)
         })
+        setLoader(false)
     }
     useEffect(()=>{
       Fetch()
@@ -96,9 +107,23 @@ export default function TotalTable(){
     return(
         <React.Fragment>
                 <TextField value={query} onChange={(e)=>setQuery(e.target.value)} id="standard-basic" label="Номер телефона или ID фотографии"  variant="standard" />
-
+                <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+  <span>KG</span>
+<Switch
+  checked={checked}
+  onChange={()=>setChecked(!checked)}
+  inputProps={{ 'aria-label': 'controlled' }}
+/>
+<span>KZ</span>
+</div>
         <TableContainer component={Paper}>
-
+        <Backdrop
+  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+  open={isLoader}
+  onClick={()=>setLoader(false)}
+>
+  <CircularProgress color="inherit" />
+</Backdrop>
         <Table  aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -108,7 +133,8 @@ export default function TotalTable(){
               <TableCell align="center">Статус</TableCell>
               <TableCell align="center">Причина отказа</TableCell>
               <TableCell align="center">Дата создания</TableCell>
-
+              <TableCell align="center">Страна</TableCell>
+              <TableCell align="center">Канал</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -133,7 +159,14 @@ export default function TotalTable(){
                 {row.date}
 
                 </TableCell>
+                <TableCell align="center">
+                {row.country}
 
+                </TableCell>
+                <TableCell align="center">
+                {row.channel}
+
+                </TableCell>
 
   
               </TableRow>
