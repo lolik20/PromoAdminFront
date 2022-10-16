@@ -97,7 +97,8 @@ export default function DataTableUZ(){
       })
     }
     useEffect(()=>{
-      Fetch()
+      Fetch() 
+      
     },[checked])
   async  function Fetch(){
        await axios.get(`${urls.main}/api/admin/requests?skip=${page*rowsPerPage}&take=${rowsPerPage}&query=${query}&country=2`).then(response=>{
