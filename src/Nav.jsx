@@ -6,7 +6,9 @@ export default function Nav(){
 return(
     <div className="container">
         <nav>
-        <Link to="/">Заявки</Link>
+        <Link to="/">Заявки (KZ,KG)</Link>
+        <Link to="/uz">Заявки (UZ)</Link>
+
    <Link to="/all">Обработанные</Link>
         </nav>
    

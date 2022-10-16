@@ -16,8 +16,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 
 const axios = require('axios').default;
 
@@ -38,24 +36,23 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-export default function TotalTable(){
+export default function DataTableUZ(){
     const [requests,setRequests]=useState([])
     const [isModal,setModal]= useState(false)
-    const [checked,setChecked]=useState(false)
+    const[checked,setChecked]=useState(false)
     const [reason,setReason] =useState("")
     const [isDeclineModal,setDeclineModal]=useState(false)
     const [image,setImage] =useState("")
-    const [query,setQuery]=useState("")
-    const [isLoader,setLoader]=useState(true)
     const [count,setCount]=useState(0)
+    const [query,setQuery]=useState("")
     const [rowsPerPage,setRowsPerPage]=useState(10)
     const [page,setPage]=useState(0)
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
-  useEffect(()=>{
-    Fetch()
-  },[query])
+    useEffect(()=>{
+      Fetch()
+    },[query])
     const handleChangeRowsPerPage = (event) => {
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
@@ -64,11 +61,24 @@ export default function TotalTable(){
       localStorage.setItem("id",id)
       setDeclineModal(true)
     }
+    async function Accept(id){
+      await axios.put(`${urls.main}/api/admin/accept?id=${id}`)
+      .then(response=>{
+        Fetch()
+      })
+    }
     async function DownloadImage(){
       var a = document.createElement("a"); //Create <a>
       a.href = "data:image/jpg;base64," + image; //Image Base64 Goes here
       a.download = "image.jpg"; //File name Here
       a.click()
+    }
+    async function Decline(id){
+      await axios.put(`${urls.main}/api/admin/decline?id=${id}&reason=${reason}`)
+      .then(response=>{
+        Fetch()
+        setDeclineModal(false)
+      })
     }
     async function GetPhoto(id){
       await axios.get(`${urls.main}/api/admin/photo?id=${id}`)
@@ -87,16 +97,13 @@ export default function TotalTable(){
       })
     }
     useEffect(()=>{
-
       Fetch()
     },[checked])
   async  function Fetch(){
-    setLoader(true)
-       await axios.get(`${urls.main}/api/admin/all?skip=${page*rowsPerPage}&take=${rowsPerPage}&query=${query}`).then(response=>{
+       await axios.get(`${urls.main}/api/admin/requests?skip=${page*rowsPerPage}&take=${rowsPerPage}&query=${query}&country=2`).then(response=>{
             setRequests(response.data.codes)
             setCount(response.data.count)
         })
-        setLoader(false)
     }
     useEffect(()=>{
       Fetch()
@@ -106,27 +113,23 @@ export default function TotalTable(){
     },[])
     return(
         <React.Fragment>
-                <TextField value={query} onChange={(e)=>setQuery(e.target.value)} id="standard-basic" label="Номер телефона или ID фотографии"  variant="standard" />
-
+                  <TextField id="standard-basic" value={query} onChange={(e)=>setQuery(e.target.value)} label="Номер телефона или ID фотографии" variant="standard" />
+                 
         <TableContainer component={Paper}>
-        <Backdrop
-  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-  open={isLoader}
-  onClick={()=>setLoader(false)}
->
-  <CircularProgress color="inherit" />
-</Backdrop>
+
         <Table  aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell align="center">Номер телефона</TableCell>
               <TableCell align="center">ID фотографии</TableCell>
               <TableCell align="center">Приз</TableCell>
-              <TableCell align="center">Статус</TableCell>
-              <TableCell align="center">Причина отказа</TableCell>
-              <TableCell align="center">Дата создания</TableCell>
+              <TableCell align="center">Дата</TableCell>
               <TableCell align="center">Страна</TableCell>
               <TableCell align="center">Канал</TableCell>
+
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+
             </TableRow>
           </TableHead>
           <TableBody>
@@ -138,15 +141,7 @@ export default function TotalTable(){
            
                 <TableCell align="center">{row.phoneNumber}</TableCell>
                 <TableCell align="center"><span onClick={()=>GetPhoto(row.photoId)} style={{cursor:"pointer"}}>{row.photoId}</span></TableCell>
-                <TableCell align="center">{row.prize==null?"-":row.prize}</TableCell>
-
-                <TableCell align="center">
-                  {row.status}
-                </TableCell>
-                <TableCell align="center">
-                {row.reason == null?"-":row.reason}
-
-                </TableCell>
+                <TableCell align="center">{row.prize==null?"ожидает подтверждения":row.prize}</TableCell>
                 <TableCell align="center">
                 {row.date}
 
@@ -159,6 +154,21 @@ export default function TotalTable(){
                 {row.channel}
 
                 </TableCell>
+                <TableCell align="center">
+                  <button className='button'  onClick={()=>Accept(row.photoId)}>
+              <CheckOutlinedIcon width={18} height={18} color="success"></CheckOutlinedIcon>
+              </button>
+                </TableCell>
+                
+                <TableCell align="center">
+                  <button className='button' onClick={()=>OpenDeclineModal(row.photoId)}>
+                  <CloseIcon width={18} height={18} color="error" ></CloseIcon>
+
+                  </button>
+
+                </TableCell>
+        
+                {/* <TableCell align="center">{row.prize}</TableCell> */}
 
   
               </TableRow>
@@ -179,7 +189,21 @@ export default function TotalTable(){
 
   </Box>
 </Modal>
+<Modal
+  open={isDeclineModal}
+  onClose={()=>setDeclineModal(false)}
+  aria-labelledby="modal-modal-title"
+  aria-describedby="modal-modal-description"
+>
+<Box sx={style} style={{width:200}}>
 
+<TextField id="standard-basic" label="Причина отказа" variant="standard" value={reason} onChange={(e)=>setReason(e.target.value)} />
+
+<Button variant="outlined" style={{width:200}} onClick={()=>{Decline(localStorage.getItem("id"))}}>Отклонить</Button>
+
+</Box>
+
+</Modal>
       </TableContainer>
       <TablePagination
             

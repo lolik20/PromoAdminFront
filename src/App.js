@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './Login';
 import TotalTable from './TotalTable';
 import Nav from './Nav';
+import DataTableUZ from './DataTableUZ';
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
     <Route path="/"  element={<Nav/>}>
     <Route index element={<DataTable/>}></Route>
     <Route path="/all" index element={<TotalTable/>}></Route>
-
+    <Route path='/uz' element={<DataTableUZ></DataTableUZ>}></Route>
     </Route>
     <Route path="/login" index element={<Login/>}></Route>
 
