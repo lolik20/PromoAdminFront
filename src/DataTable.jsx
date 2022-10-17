@@ -57,16 +57,23 @@ export default function DataTable(){
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
     };
+    function EditCode(index,code){
+      let newState = [...requests];
+      newState[index].code=code
+      setRequests(newState)
+    }
     async function OpenDeclineModal(id){
       localStorage.setItem("id",id)
       setDeclineModal(true)
     }
     async function Accept(id){
-      await axios.put(`${urls.main}/api/admin/accept?id=${id}`)
-      .then(response=>{
-        Fetch()
-      })
-    }
+      let obj = requests.find(x=>x.photoId===id)
+
+    await axios.put(`${urls.main}/api/admin/accept?id=${id}&code=${obj.code}`)
+    .then(response=>{
+      Fetch()
+    })
+  }
     async function DownloadImage(){
       var a = document.createElement("a"); //Create <a>
       a.href = "data:image/jpg;base64," + image; //Image Base64 Goes here
@@ -74,12 +81,14 @@ export default function DataTable(){
       a.click()
     }
     async function Decline(id){
-      await axios.put(`${urls.main}/api/admin/decline?id=${id}&reason=${reason}`)
-      .then(response=>{
-        Fetch()
-        setDeclineModal(false)
-      })
-    }
+      let obj = requests.find(x=>x.photoId===id)
+  
+        await axios.put(`${urls.main}/api/admin/decline?id=${id}&reason=${reason}&code=${obj.code}`)
+        .then(response=>{
+          Fetch()
+          setDeclineModal(false)
+        })
+      }
     async function GetPhoto(id){
       await axios.get(`${urls.main}/api/admin/photo?id=${id}`)
       .then(response=>{
@@ -135,6 +144,7 @@ export default function DataTable(){
               <TableCell align="center">Дата</TableCell>
               <TableCell align="center">Страна</TableCell>
               <TableCell align="center">Канал</TableCell>
+              <TableCell align="center">Код</TableCell>
 
               <TableCell align="center"></TableCell>
               <TableCell align="center"></TableCell>
@@ -142,7 +152,7 @@ export default function DataTable(){
             </TableRow>
           </TableHead>
           <TableBody>
-            {requests.map((row) => (
+            {requests.map((row,index) => (
               <TableRow
                 key={row.sourceActivationId}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -162,6 +172,19 @@ export default function DataTable(){
                 <TableCell align="center">
                 {row.channel}
 
+                </TableCell>
+                <TableCell>
+                    {row.isManual&&
+                    
+                    <TextField
+                    id="outlined-name"
+                    label="Код"
+                    value={row.code}
+                    onChange={(e)=>EditCode(index,e.target.value)}
+                  />}
+   {!row.isManual&&
+                  <span>{row.code}</span>
+                  }
                 </TableCell>
                 <TableCell align="center">
                   <button className='button'  onClick={()=>Accept(row.photoId)}>

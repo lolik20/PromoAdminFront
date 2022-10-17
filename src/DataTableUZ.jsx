@@ -62,7 +62,9 @@ export default function DataTableUZ(){
       setDeclineModal(true)
     }
     async function Accept(id){
-      await axios.put(`${urls.main}/api/admin/accept?id=${id}`)
+        let obj = requests.find(x=>x.photoId===id)
+
+      await axios.put(`${urls.main}/api/admin/accept?id=${id}&code=${obj.code}`)
       .then(response=>{
         Fetch()
       })
@@ -74,7 +76,9 @@ export default function DataTableUZ(){
       a.click()
     }
     async function Decline(id){
-      await axios.put(`${urls.main}/api/admin/decline?id=${id}&reason=${reason}`)
+    let obj = requests.find(x=>x.photoId===id)
+
+      await axios.put(`${urls.main}/api/admin/decline?id=${id}&reason=${reason}&code=${obj.code}`)
       .then(response=>{
         Fetch()
         setDeclineModal(false)
@@ -87,6 +91,11 @@ export default function DataTableUZ(){
         setModal(true)
       })
     }
+    function EditCode(index,code){
+        let newState = [...requests];
+        newState[index].code=code
+        setRequests(newState)
+      }
     async function Login(){
       await axios.post(`${urls.main}/api/admin/login`,{login:localStorage.getItem("login"),password:localStorage.getItem("password")})
       .then(response=>{
@@ -98,7 +107,7 @@ export default function DataTableUZ(){
     }
     useEffect(()=>{
       Fetch() 
-      
+
     },[checked])
   async  function Fetch(){
        await axios.get(`${urls.main}/api/admin/requests?skip=${page*rowsPerPage}&take=${rowsPerPage}&query=${query}&country=2`).then(response=>{
@@ -127,6 +136,7 @@ export default function DataTableUZ(){
               <TableCell align="center">Дата</TableCell>
               <TableCell align="center">Страна</TableCell>
               <TableCell align="center">Канал</TableCell>
+              <TableCell align="center">Код</TableCell>
 
               <TableCell align="center"></TableCell>
               <TableCell align="center"></TableCell>
@@ -134,7 +144,7 @@ export default function DataTableUZ(){
             </TableRow>
           </TableHead>
           <TableBody>
-            {requests.map((row) => (
+            {requests.map((row,index) => (
               <TableRow
                 key={row.sourceActivationId}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -154,6 +164,19 @@ export default function DataTableUZ(){
                 <TableCell align="center">
                 {row.channel}
 
+                </TableCell>
+                <TableCell>
+                    {row.isManual&&
+                    
+                    <TextField
+                    id="outlined-name"
+                    label="Код"
+                    value={row.code}
+                    onChange={(e)=>EditCode(index,e.target.value)}
+                  />}
+     {!row.isManual&&
+                  <span>{row.code}</span>
+                  }
                 </TableCell>
                 <TableCell align="center">
                   <button className='button'  onClick={()=>Accept(row.photoId)}>
