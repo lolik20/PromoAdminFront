@@ -16,6 +16,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const axios = require('axios').default;
 
@@ -47,6 +49,7 @@ export default function DataTable(){
     const [query,setQuery]=useState("")
     const [rowsPerPage,setRowsPerPage]=useState(10)
     const [page,setPage]=useState(0)
+    const [isLoader,setLoader]=useState(true)
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
@@ -109,10 +112,12 @@ export default function DataTable(){
       Fetch()
     },[checked])
   async  function Fetch(){
+    setLoader(true)
        await axios.get(`${urls.main}/api/admin/requests?skip=${page*rowsPerPage}&take=${rowsPerPage}&query=${query}&country=${checked?1:0}`).then(response=>{
             setRequests(response.data.codes)
             setCount(response.data.count)
         })
+        setLoader(false)
     }
     useEffect(()=>{
       Fetch()
@@ -122,6 +127,13 @@ export default function DataTable(){
     },[])
     return(
         <React.Fragment>
+          <Backdrop
+  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+  open={isLoader}
+  onClick={()=>setLoader(false)}
+>
+  <CircularProgress color="inherit" />
+</Backdrop>
                   <TextField id="standard-basic" value={query} onChange={(e)=>setQuery(e.target.value)} label="Номер телефона или ID фотографии" variant="standard" />
                  
 <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>

@@ -16,6 +16,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const axios = require('axios').default;
 
@@ -47,6 +49,7 @@ export default function DataTableUZ(){
     const [query,setQuery]=useState("")
     const [rowsPerPage,setRowsPerPage]=useState(10)
     const [page,setPage]=useState(0)
+    const[isLoader,setLoader]=useState(true)
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
@@ -64,7 +67,7 @@ export default function DataTableUZ(){
     async function Accept(id){
         let obj = requests.find(x=>x.photoId===id)
 
-      await axios.put(`${urls.main}/api/admin/accept?id=${id}&code=${obj.code}`)
+      await axios.put(`${urls.main}/api/admin/accept?id=${id}`)
       .then(response=>{
         Fetch()
       })
@@ -78,7 +81,7 @@ export default function DataTableUZ(){
     async function Decline(id){
     let obj = requests.find(x=>x.photoId===id)
 
-      await axios.put(`${urls.main}/api/admin/decline?id=${id}&reason=${reason}&code=${obj.code}`)
+      await axios.put(`${urls.main}/api/admin/decline?id=${id}&reason=${reason}`)
       .then(response=>{
         Fetch()
         setDeclineModal(false)
@@ -91,11 +94,7 @@ export default function DataTableUZ(){
         setModal(true)
       })
     }
-    function EditCode(index,code){
-        let newState = [...requests];
-        newState[index].code=code
-        setRequests(newState)
-      }
+   
     async function Login(){
       await axios.post(`${urls.main}/api/admin/login`,{login:localStorage.getItem("login"),password:localStorage.getItem("password")})
       .then(response=>{
@@ -110,10 +109,12 @@ export default function DataTableUZ(){
 
     },[checked])
   async  function Fetch(){
+    setLoader(true)
        await axios.get(`${urls.main}/api/admin/requests?skip=${page*rowsPerPage}&take=${rowsPerPage}&query=${query}&country=2`).then(response=>{
             setRequests(response.data.codes)
             setCount(response.data.count)
         })
+        setLoader(false)
     }
     useEffect(()=>{
       Fetch()
@@ -123,6 +124,13 @@ export default function DataTableUZ(){
     },[])
     return(
         <React.Fragment>
+           <Backdrop
+  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+  open={isLoader}
+  onClick={()=>setLoader(false)}
+>
+  <CircularProgress color="inherit" />
+</Backdrop>
                   <TextField id="standard-basic" value={query} onChange={(e)=>setQuery(e.target.value)} label="Номер телефона или ID фотографии" variant="standard" />
                  
         <TableContainer component={Paper}>
@@ -166,17 +174,9 @@ export default function DataTableUZ(){
 
                 </TableCell>
                 <TableCell>
-                    {row.isManual&&
-                    
-                    <TextField
-                    id="outlined-name"
-                    label="Код"
-                    value={row.code}
-                    onChange={(e)=>EditCode(index,e.target.value)}
-                  />}
-     {!row.isManual&&
-                  <span>{row.code}</span>
-                  }
+                   
+                {row.code==null?"-":row.code}
+                  
                 </TableCell>
                 <TableCell align="center">
                   <button className='button'  onClick={()=>Accept(row.photoId)}>
