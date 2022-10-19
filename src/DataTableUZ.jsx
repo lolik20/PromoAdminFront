@@ -144,7 +144,6 @@ export default function DataTableUZ(){
               <TableCell align="center">Дата</TableCell>
               <TableCell align="center">Страна</TableCell>
               <TableCell align="center">Канал</TableCell>
-              <TableCell align="center">Код</TableCell>
 
               <TableCell align="center"></TableCell>
               <TableCell align="center"></TableCell>
@@ -173,11 +172,7 @@ export default function DataTableUZ(){
                 {row.channel}
 
                 </TableCell>
-                <TableCell>
-                   
-                {row.code==null?"-":row.code}
-                  
-                </TableCell>
+                
                 <TableCell align="center">
                   <button className='button'  onClick={()=>Accept(row.photoId)}>
               <CheckOutlinedIcon width={18} height={18} color="success"></CheckOutlinedIcon>
