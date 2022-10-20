@@ -88,11 +88,13 @@ export default function DataTableUZ(){
       })
     }
     async function GetPhoto(id){
+      setLoader(true)
       await axios.get(`${urls.main}/api/admin/photo?id=${id}`)
       .then(response=>{
         setImage(response.data)
         setModal(true)
       })
+      setLoader(false)
     }
    
     async function Login(){
