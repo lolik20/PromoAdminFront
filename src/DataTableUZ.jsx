@@ -31,7 +31,7 @@ const style = {
   display:"flex",
   flexDirection:"column",
   transform: 'translate(-50%, -50%)',
-  width: 900,
+  height:"85vh",
   bgcolor: 'background.paper',
   border: 'none',
   outline:'none',
@@ -206,7 +206,7 @@ export default function DataTableUZ(){
           <img className='codeImage' src={`data:image/jpeg;base64,${image}`}></img>
           <Button variant="outlined" style={{width:200}} onClick={()=>DownloadImage()}>Загрузить</Button>
 
-          <Button variant="outlined" onClick={()=>setModal(false)}>Закрыть</Button>
+          
 
   </Box>
 </Modal>
