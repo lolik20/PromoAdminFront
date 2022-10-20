@@ -84,9 +84,8 @@ export default function DataTable(){
       a.click()
     }
     async function Decline(id){
-      let obj = requests.find(x=>x.photoId===id)
   
-        await axios.put(`${urls.main}/api/admin/decline?id=${id}&reason=${reason}&code=${obj.code}`)
+        await axios.put(`${urls.main}/api/admin/decline?id=${id}&reason=${reason}`)
         .then(response=>{
           Fetch()
           setDeclineModal(false)
