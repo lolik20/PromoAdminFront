@@ -127,6 +127,8 @@ export default function TotalTable(){
               <TableCell align="center">Дата создания</TableCell>
               <TableCell align="center">Страна</TableCell>
               <TableCell align="center">Канал</TableCell>
+              <TableCell align="center">Кто активировал</TableCell>
+
               <TableCell align="center">Код</TableCell>
 
             </TableRow>
@@ -159,6 +161,10 @@ export default function TotalTable(){
                 </TableCell>
                 <TableCell align="center">
                 {row.channel}
+
+                </TableCell>
+                <TableCell align="center">
+                {row.activationType}
 
                 </TableCell>
                 <TableCell align="center">
