@@ -31,7 +31,7 @@ const style = {
   display:"flex",
   flexDirection:"column",
   transform: 'translate(-50%, -50%)',
-height:"85vh",
+maxHeight:"85vh",
   bgcolor: 'background.paper',
   border: 'none',
   outline:'none',
@@ -60,9 +60,9 @@ export default function DataTable(){
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
     };
-    function EditCode(index,code){
+    function EditCode(photoId,code){
       let newState = [...requests];
-      newState[index].code=code
+      newState.find(x=>x.photoId===photoId).code=code
       setRequests(newState)
     }
     async function OpenDeclineModal(id){
@@ -165,7 +165,7 @@ export default function DataTable(){
             </TableRow>
           </TableHead>
           <TableBody>
-            {requests.map((row,index) => (
+            {requests.map((row) => (
               <TableRow
                 key={row.sourceActivationId}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -193,7 +193,7 @@ export default function DataTable(){
                     id="outlined-name"
                     label="Код"
                     value={row.code}
-                    onChange={(e)=>EditCode(index,e.target.value)}
+                    onChange={(e)=>EditCode(row.photoId,e.target.value)}
                   />}
    {!row.isManual&&
                   <span>{row.code}</span>
