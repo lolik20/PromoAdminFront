@@ -138,13 +138,13 @@ export default function DataTable(){
                   <TextField id="standard-basic" value={query} onChange={(e)=>setQuery(e.target.value)} label="Номер телефона или ID фотографии" variant="standard" />
                  
 <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
-  <span>KG</span>
+  <span>KZ</span>
 <Switch
   checked={checked}
   onChange={()=>setChecked(!checked)}
   inputProps={{ 'aria-label': 'controlled' }}
 />
-<span>KZ</span>
+<span>KG</span>
 </div>
         <TableContainer component={Paper}>
 
