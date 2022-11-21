@@ -8,7 +8,7 @@ return(
         <nav>
         <Link to="/">Заявки (KZ,KG)</Link>
         <Link to="/uz">Заявки (UZ)</Link>
-        <Link to="/all">QR коды</Link>
+        <Link to="/qr">QR коды</Link>
 
    <Link to="/all">Обработанные</Link>
         </nav>
