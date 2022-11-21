@@ -71,11 +71,13 @@ export default function TotalTable(){
       a.click()
     }
     async function GetPhoto(id){
+      setLoader(true)
       await axios.get(`${urls.main}/api/admin/photo?id=${id}`)
       .then(response=>{
         setImage(response.data)
         setModal(true)
       })
+      setLoader(false)
     }
     async function Login(){
       await axios.post(`${urls.main}/api/admin/login`,{login:localStorage.getItem("login"),password:localStorage.getItem("password")})
@@ -83,7 +85,7 @@ export default function TotalTable(){
         Fetch()
 
       }).catch(error=>{
-        window.location.href="/login"
+        // window.location.href="/login"
       })
     }
     useEffect(()=>{
