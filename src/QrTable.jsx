@@ -21,6 +21,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import gif from "./tea.gif"
+import Autocomplete from '@mui/material/Autocomplete';
+
 const axios = require('axios').default;
 
 const style = {
@@ -31,6 +33,7 @@ const style = {
   alignItems:"center",
   justifyContent:"center",
   display:"flex",
+  width:"310px",
   flexDirection:"column",
   transform: 'translate(-50%, -50%)',
 maxHeight:"85vh",
@@ -63,11 +66,15 @@ export default function QrTable(){
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
     };
+    const reasons = [
+      { label: 'ФП уже зарегистрирован в системе'},
+    {label:"Имеется акционный продукт"}]
     function EditFiscal(photoId,fiscal){
       let newState = [...requests];
       newState.find(x=>x.photoId===photoId).fiscal=fiscal;
       setRequests(newState)
     }
+  
     function EditBin(photoId,bin){
       let newState = [...requests];
       newState.find(x=>x.photoId===photoId).bin=bin;
@@ -171,6 +178,7 @@ export default function QrTable(){
 
               <TableCell align="center"></TableCell>
               <TableCell align="center"></TableCell>
+              <TableCell align="center">Причина отказа</TableCell>
 
             </TableRow>
           </TableHead>
@@ -232,19 +240,29 @@ export default function QrTable(){
                
 
                </TableCell>
+               <TableCell align="center">
+               {row.status==="InProgress"&&
 
-                <TableCell align="center">
-                  <button className='button'  onClick={()=>Accept(row.photoId)}>
-              <CheckOutlinedIcon width={18} height={18} color="success"></CheckOutlinedIcon>
-              </button>
-                </TableCell>
+               <button className='button'  onClick={()=>Accept(row.photoId)}>
+           <CheckOutlinedIcon width={18} height={18} color="success"></CheckOutlinedIcon>
+           </button>
+               }
+             </TableCell>
+               
+                
                 
                 <TableCell align="center">
+                {row.status==="InProgress"&&
+
                   <button className='button' onClick={()=>OpenDeclineModal(row.photoId)}>
                   <CloseIcon width={18} height={18} color="error" ></CloseIcon>
 
                   </button>
-
+                  }
+                </TableCell>
+               
+                <TableCell align="center">
+                  {row.reason===null?"-":row.reason}
                 </TableCell>
               </TableRow>
             ))}
@@ -268,10 +286,15 @@ export default function QrTable(){
   aria-labelledby="modal-modal-title"
   aria-describedby="modal-modal-description"
 >
-<Box sx={style} style={{width:200}}>
+<Box sx={style} >
 
-<TextField id="standard-basic" label="Причина отказа" variant="standard" value={reason} onChange={(e)=>setReason(e.target.value)} />
-
+<Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={reasons}
+                sx={{ width: 300 }}
+                renderInput={(params) => <TextField value={reason} onChange={(e)=>setReason(e.target.value)} {...params} label="Причина" />}
+              />
 <Button variant="outlined" style={{width:200}} onClick={()=>{Decline(localStorage.getItem("id"))}}>Отклонить</Button>
 
 </Box>

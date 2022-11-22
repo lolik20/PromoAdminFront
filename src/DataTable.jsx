@@ -19,6 +19,7 @@ import Switch from '@mui/material/Switch';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import gif from "./tea.gif"
+import Autocomplete from '@mui/material/Autocomplete';
 
 const axios = require('axios').default;
 
@@ -39,6 +40,13 @@ maxHeight:"85vh",
   boxShadow: 24,
   p: 4,
 };
+const reasons = [
+  { label: 'Чтобы продолжить, пожалуйста, предоставьте корректный ИИН в своем профиле	'},
+{label:"Ошибка. Этот код уже активирован!"},
+{label:"Фото повторяется"},
+{label:"Фото с интернета"},
+{label:"Нет промокода"},
+{label:"Плохое качество фотографии"}]
 export default function DataTable(){
     const [requests,setRequests]=useState([])
     const [isModal,setModal]= useState(false)
@@ -236,10 +244,16 @@ export default function DataTable(){
   aria-labelledby="modal-modal-title"
   aria-describedby="modal-modal-description"
 >
-<Box sx={style} style={{width:200}}>
+<Box sx={style}>
 
-<TextField id="standard-basic" label="Причина отказа" variant="standard" value={reason} onChange={(e)=>setReason(e.target.value)} />
 
+<Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={reasons}
+                sx={{ width: 300 }}
+                renderInput={(params) => <TextField value={reason} onChange={(e)=>setReason(e.target.value)} {...params} label="Причина" />}
+              />
 <Button variant="outlined" style={{width:200}} onClick={()=>{Decline(localStorage.getItem("id"))}}>Отклонить</Button>
 
 </Box>
