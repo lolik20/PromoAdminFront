@@ -68,7 +68,10 @@ export default function QrTable(){
     };
     const reasons = [
       { label: 'ФП уже зарегистрирован в системе'},
-    {label:"Имеется акционный продукт"}]
+    {label:"Чек не содержит акционный продукт"},
+  {label:"В Акции участвует только чеки Small&Skif"},
+  {label:"Плохое качество фото чека"}
+  ]
     function EditFiscal(photoId,fiscal){
       let newState = [...requests];
       newState.find(x=>x.photoId===photoId).fiscal=fiscal;
