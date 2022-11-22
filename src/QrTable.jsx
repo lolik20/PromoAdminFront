@@ -41,9 +41,8 @@ maxHeight:"85vh",
   p: 4,
 };
 export default function QrTable(){
-    const [requests,setRequests]=useState([])
+    const [requests,setRequests]=useState(null)
     const [isModal,setModal]= useState(false)
-    const[checked,setChecked]=useState(false)
     const [reason,setReason] =useState("")
     const [isDeclineModal,setDeclineModal]=useState(false)
     const [image,setImage] =useState("")
@@ -72,6 +71,11 @@ export default function QrTable(){
     function EditBin(photoId,bin){
       let newState = [...requests];
       newState.find(x=>x.photoId===photoId).bin=bin;
+      setRequests(newState)
+    }
+    function EditFiscal(photoId,fiscal){
+      let newState = [...requests];
+      newState.find(x=>x.photoId===photoId).fiscal=fiscal;
       setRequests(newState)
     }
     async function OpenDeclineModal(id){
@@ -118,24 +122,22 @@ export default function QrTable(){
       })
       setLoader(false)
     }
-   
-    useEffect(()=>{
-      Fetch()
-    },[checked])
   async  function Fetch(){
-    if(requests.length==0){
       setLoader(true)
       await axios.get(`${urls.main}/api/admin/qr?skip=${page*rowsPerPage}&take=${rowsPerPage}&query=${query}`).then(response=>{
            setRequests(response.data.codes)
            setCount(response.data.count)
+           setLoader(false)
+
        })
-       setLoader(false)
-    }
-   
+    
+      
     }
     useEffect(()=>{
       Fetch()
     },[rowsPerPage,page])
+
+    
     useEffect(()=>{
       Fetch()
       BinOptions()
@@ -173,7 +175,7 @@ export default function QrTable(){
             </TableRow>
           </TableHead>
           <TableBody>
-            {requests.map((row) => (
+            {requests?.map((row) => (
               <TableRow
                 key={row.sourceActivationId}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -194,33 +196,26 @@ export default function QrTable(){
 
                 </TableCell>
                <TableCell style={{textAlign:"center"}}>
-                <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={row.fiscal}
-          label="ФП"
-          onChange={(e)=>EditFiscal(row.photoId,e.target.value)}
-          
-        >
-        {/* {
-                fiscalOptions.map((x,i)=>{
-                  return(
-                    <MenuItem key={i} value={x}>{x}</MenuItem>
-                  )
-
-                })
-            } */}
-        </Select>
+                {row.status ==="InProgress"&&
+                  <TextField
+                  id="outlined-name"
+                  label=""
+                  value={row.code}
+                  onChange={(e)=>EditFiscal(row.photoId,e.target.value)}
+                />}
+                
+                
+            
 </TableCell>
                <TableCell style={{textAlign:"center"}}>
-
-               <Select
+                {row.status==="InProgress"
+                &&
+                <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={row.bin}
           label="БИН"
           onChange={(e)=>EditBin(row.photoId,e.target.value)}
-          
         >
             {
                 binOptions.map((x,i)=>{
@@ -232,6 +227,8 @@ export default function QrTable(){
             }
          
         </Select>
+                }
+               
 
                </TableCell>
 

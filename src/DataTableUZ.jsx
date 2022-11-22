@@ -93,8 +93,9 @@ export default function DataTableUZ(){
       .then(response=>{
         setImage(response.data)
         setModal(true)
+        setLoader(false)
+
       })
-      setLoader(false)
     }
    
     async function Login(){

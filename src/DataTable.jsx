@@ -191,7 +191,7 @@ export default function DataTable(){
                     
                     <TextField
                     id="outlined-name"
-                    label="Код"
+                    label=""
                     value={row.code}
                     onChange={(e)=>EditCode(row.photoId,e.target.value)}
                   />}
@@ -212,9 +212,6 @@ export default function DataTable(){
                   </button>
 
                 </TableCell>
-        
-                {/* <TableCell align="center">{row.prize}</TableCell> */}
-
   
               </TableRow>
             ))}
