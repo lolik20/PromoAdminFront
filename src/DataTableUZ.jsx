@@ -18,7 +18,7 @@ import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import gif from "./tea.gif"
 const axios = require('axios').default;
 
 const style = {
@@ -132,7 +132,7 @@ export default function DataTableUZ(){
   open={isLoader}
   onClick={()=>setLoader(false)}
 >
-  <CircularProgress color="inherit" />
+<img src={gif} style={{borderRadius:10}}></img>
 </Backdrop>
                   <TextField id="standard-basic" value={query} onChange={(e)=>setQuery(e.target.value)} label="Номер телефона или ID фотографии" variant="standard" />
                  

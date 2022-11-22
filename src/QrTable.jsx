@@ -20,7 +20,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-
+import gif from "./tea.gif"
 const axios = require('axios').default;
 
 const style = {
@@ -150,7 +150,7 @@ export default function QrTable(){
   open={isLoader}
   onClick={()=>setLoader(false)}
 >
-  <CircularProgress color="inherit" />
+<img src={gif} style={{borderRadius:10}}></img>
 </Backdrop>
                   <TextField id="standard-basic" value={query} onChange={(e)=>setQuery(e.target.value)} label="Номер телефона или ID фотографии" variant="standard" />
         <h1 style={{color:"red"}}>В РАЗРАБОТКЕ</h1>

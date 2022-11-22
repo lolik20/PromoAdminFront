@@ -18,6 +18,7 @@ import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import gif from "./tea.gif"
 
 const axios = require('axios').default;
 
@@ -85,7 +86,7 @@ export default function TotalTable(){
         Fetch()
 
       }).catch(error=>{
-        // window.location.href="/login"
+        window.location.href="/login"
       })
     }
     useEffect(()=>{
@@ -116,7 +117,7 @@ export default function TotalTable(){
   open={isLoader}
   onClick={()=>setLoader(false)}
 >
-  <CircularProgress color="inherit" />
+<img src={gif} style={{borderRadius:10}}></img>
 </Backdrop>
         <Table  aria-label="simple table">
           <TableHead>
