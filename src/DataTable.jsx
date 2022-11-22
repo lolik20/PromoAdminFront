@@ -167,7 +167,6 @@ export default function DataTable(){
           <TableBody>
             {requests.map((row) => (
               <TableRow
-                key={row.sourceActivationId}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
            
@@ -192,6 +191,7 @@ export default function DataTable(){
                     <TextField
                     id="outlined-name"
                     label=""
+                    key={row.photoId}
                     value={row.code}
                     onChange={(e)=>EditCode(row.photoId,e.target.value)}
                   />}

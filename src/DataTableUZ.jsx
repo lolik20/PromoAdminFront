@@ -156,7 +156,7 @@ export default function DataTableUZ(){
           <TableBody>
             {requests.map((row,index) => (
               <TableRow
-                key={row.sourceActivationId}
+                key={row.photoId}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
            

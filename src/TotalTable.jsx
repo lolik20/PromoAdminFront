@@ -138,7 +138,7 @@ export default function TotalTable(){
           <TableBody>
             {requests.map((row) => (
               <TableRow
-                key={row.sourceActivationId}
+                key={row.photoId}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
            

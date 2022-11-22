@@ -200,6 +200,7 @@ export default function QrTable(){
                   <TextField
                   id="outlined-name"
                   label=""
+                  key={row.photoId}
                   value={row.code}
                   onChange={(e)=>EditFiscal(row.photoId,e.target.value)}
                 />}
