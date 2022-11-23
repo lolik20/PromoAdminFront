@@ -286,12 +286,16 @@ export default function QrTable(){
 <Box sx={style} >
 
 <Autocomplete
-                freeSolo
+                selectOnFocus
                 disableClearable
                 id="combo-box-demo"
                 options={reasons}
+                value={reason}
+                onChange={(event,newValue)=>{
+                  setReason(newValue.label)
+                }}
                 sx={{ width: 300 }}
-                renderInput={(params) => <TextField value={reason} onChange={(e)=>setReason(e.target.value)} {...params} label="Причина" />}
+                renderInput={(params) => <TextField value={reason} onChange={(e)=>setReason(e.target.value)}  {...params} label="Причина" />}
               />
 <Button variant="outlined" style={{width:200}} onClick={()=>{Decline(localStorage.getItem("id"))}}>Отклонить</Button>
 
