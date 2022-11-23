@@ -286,7 +286,8 @@ export default function QrTable(){
 <Box sx={style} >
 
 <Autocomplete
-                disablePortal
+                freeSolo
+                disableClearable
                 id="combo-box-demo"
                 options={reasons}
                 sx={{ width: 300 }}

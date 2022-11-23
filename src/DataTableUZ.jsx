@@ -230,6 +230,8 @@ export default function DataTableUZ(){
 
 
 <Autocomplete
+ freeSolo
+ disableClearable
                 disablePortal
                 id="combo-box-demo"
                 options={reasons}
