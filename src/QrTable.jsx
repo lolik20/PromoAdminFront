@@ -52,7 +52,6 @@ export default function QrTable(){
     const [count,setCount]=useState(0)
     const [query,setQuery]=useState("")
     const [binOptions,setBinOptions]=useState([])
-    const [fiscalOptions,setFiscalOptions] =useState([])
     const [rowsPerPage,setRowsPerPage]=useState(10)
     const [page,setPage]=useState(0)
     const [isLoader,setLoader]=useState(true)
@@ -95,7 +94,7 @@ export default function QrTable(){
     async function Accept(id){
       let obj = requests.find(x=>x.photoId===id)
 
-    await axios.put(`${urls.main}/api/admin/qr/accept?id=${id}&code=${obj.code}`)
+    await axios.put(`${urls.main}/api/admin/qr/accept?id=${id}&fiscal=${obj.fiscal}&bin=${obj.bin}`)
     .then(response=>{
       Fetch()
     })
@@ -105,11 +104,7 @@ export default function QrTable(){
         setBinOptions(response.data)
     })
   }
-  async function FiscalOptions(){
-    await axios.get(`${urls.main}/api/admin/fiscal`).then(response=>{
-        setFiscalOptions(response.data)
-    })
-  }
+
     async function DownloadImage(){
       var a = document.createElement("a"); //Create <a>
       a.href = "data:image/jpg;base64," + image; //Image Base64 Goes here
@@ -151,7 +146,6 @@ export default function QrTable(){
     useEffect(()=>{
       Fetch()
       BinOptions()
-      FiscalOptions()
     },[])
     return(
         <React.Fragment>
