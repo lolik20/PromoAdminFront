@@ -112,10 +112,12 @@ export default function QrTable(){
       a.click()
     }
     async function Decline(id){
+      setLoader(true)
         await axios.put(`${urls.main}/api/admin/qr/decline?id=${id}&reason=${reason}`)
         .then(response=>{
           Fetch()
           setDeclineModal(false)
+          setLoader(false)
         })
       }
     async function GetPhoto(id){

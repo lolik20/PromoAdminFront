@@ -47,6 +47,8 @@ export default function DataTableUZ(){
   {label:"Фото повторяется"},
   {label:"Фото с интернета"},
   {label:"Нет промокода"},
+  {label:"Фото с прилавка"},
+  {label:"Отсутсвует фото чая"},
   {label:"Плохое качество фотографии"}]
     const [requests,setRequests]=useState([])
     const [isModal,setModal]= useState(false)

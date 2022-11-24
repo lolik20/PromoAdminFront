@@ -46,6 +46,8 @@ const reasons = [
 {label:"Фото повторяется"},
 {label:"Фото с интернета"},
 {label:"Нет промокода"},
+{label:"Фото с прилавка"},
+  {label:"Отсутсвует фото чая"},
 {label:"Плохое качество фотографии"}]
 export default function DataTable(){
     const [requests,setRequests]=useState([])
