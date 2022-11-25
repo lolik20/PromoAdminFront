@@ -99,6 +99,7 @@ export default function QrTable(){
       Fetch()
     })
     .catch(error=>{
+      alert(error.response.data)
       Fetch()
 
     })
@@ -123,6 +124,7 @@ export default function QrTable(){
           setDeclineModal(false)
           setLoader(false)
         }).catch(error=>{
+          alert(error.response.data)
           Fetch()
         })
       }
