@@ -98,6 +98,10 @@ export default function QrTable(){
     .then(response=>{
       Fetch()
     })
+    .catch(error=>{
+      Fetch()
+
+    })
   }
   async function BinOptions(){
     await axios.get(`${urls.main}/api/admin/bins`).then(response=>{
@@ -118,6 +122,8 @@ export default function QrTable(){
           Fetch()
           setDeclineModal(false)
           setLoader(false)
+        }).catch(error=>{
+          Fetch()
         })
       }
     async function GetPhoto(id){
