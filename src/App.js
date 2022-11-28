@@ -7,6 +7,7 @@ import TotalTable from './TotalTable';
 import Nav from './Nav';
 import DataTableUZ from './DataTableUZ';
 import QrTable from './QrTable';
+import TotalTableQR from './TotalTableQR';
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
     <Route path="/all" index element={<TotalTable/>}></Route>
     <Route path='/uz' element={<DataTableUZ></DataTableUZ>}></Route>
     <Route path="/qr" element={<QrTable></QrTable>}></Route>
+    <Route path="/allqr" element={<TotalTableQR></TotalTableQR>}></Route>
+
     </Route>
     <Route path="/login" index element={<Login/>}></Route>
 

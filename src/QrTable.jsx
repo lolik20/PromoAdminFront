@@ -58,9 +58,7 @@ export default function QrTable(){
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
-    useEffect(()=>{
-      Fetch()
-    },[query])
+   
     const handleChangeRowsPerPage = (event) => {
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
@@ -139,7 +137,7 @@ export default function QrTable(){
     }
   async  function Fetch(){
       setLoader(true)
-      await axios.get(`${urls.main}/api/admin/qr?skip=${page*rowsPerPage}&take=${rowsPerPage}&query=${query}`).then(response=>{
+      await axios.get(`${urls.main}/api/admin/qr?skip=${page*rowsPerPage}&take=${rowsPerPage}&query=${query}&inProgress=true`).then(response=>{
            setRequests(response.data.codes)
            setCount(response.data.count)
            setLoader(false)
@@ -150,7 +148,7 @@ export default function QrTable(){
     }
     useEffect(()=>{
       Fetch()
-    },[rowsPerPage,page])
+    },[rowsPerPage,page,query])
 
     
     useEffect(()=>{
@@ -167,7 +165,6 @@ export default function QrTable(){
 <img src={gif} style={{borderRadius:10}}></img>
 </Backdrop>
                   <TextField id="standard-basic" value={query} onChange={(e)=>setQuery(e.target.value)} label="Номер телефона или ID фотографии" variant="standard" />
-        <h1 style={{color:"red"}}>В РАЗРАБОТКЕ</h1>
         <TableContainer component={Paper}>
 
         <Table  aria-label="simple table">

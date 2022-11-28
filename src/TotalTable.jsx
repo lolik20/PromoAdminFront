@@ -54,9 +54,7 @@ export default function TotalTable(){
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
-  useEffect(()=>{
-    Fetch()
-  },[query])
+
     const handleChangeRowsPerPage = (event) => {
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
@@ -86,7 +84,7 @@ export default function TotalTable(){
         Fetch()
 
       }).catch(error=>{
-        window.location.href="/login"
+        // window.location.href="/login"
       })
     }
     useEffect(()=>{
@@ -103,7 +101,7 @@ export default function TotalTable(){
     }
     useEffect(()=>{
       Fetch()
-    },[rowsPerPage,page])
+    },[rowsPerPage,page,query])
     useEffect(()=>{
       Login()
     },[])
